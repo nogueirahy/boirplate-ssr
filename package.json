@@ -4,17 +4,25 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "start": "parcel index.html"
+    "clear": "rm -rf .cache dist",
+    "build:client": "cross-env BABEL_ENV=client parcel build src/client/index.js -d dist/client --public-url /dist --no-minify --no-cache",
+    "build:server": "cross-env BABEL_ENV=server parcel build src/server/index.js -d dist/server --public-url /dist --target=node --no-minify  --no-cache",
+    "build": "yarn clear && concurrently 'yarn build:client' 'yarn build:server'",
+    "start": "yarn run build && node dist/server",
+    "dev": "yarn run build && parcel src/client/index.html"
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "react": "^16.14.0",
+    "react-dom": "^16.14.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.3",
     "@babel/preset-env": "^7.12.1",
     "@babel/preset-react": "^7.12.1",
+    "concurrently": "^5.3.0",
+    "cross-env": "^7.0.2",
     "parcel-bundler": "^1.12.4",
     "typescript": "^4.0.3"
-  },
-  "dependencies": {
-    "react": "^16.14.0",
-    "react-dom": "^16.14.0"
   }
 }
