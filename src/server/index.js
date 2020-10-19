@@ -10,7 +10,7 @@ const port = process.env.PORT || 8080;
 app.use(morgan("tiny"));
 
 if (process.env.NODE_ENV === "production") {
-  app.use("/static", express.static("./static"));
+  app.use("/static", express.static("./build/static"));
 } else {
   app.use("/static", express.static(".tmp"));
 }

@@ -8,9 +8,9 @@ let html = null;
 export default ({ markup, preloadedState }) => {
   if (!compiled) {
     if (process.env.NODE_ENV === "production") {
-      html = fs.readFileSync(path.resolve(__dirname, "./static/index.html"));
+      html = fs.readFileSync(path.resolve("build/static/index.html"));
     } else {
-      html = fs.readFileSync(path.resolve(__dirname, "../../.tmp/index.html"));
+      html = fs.readFileSync(path.resolve(".tmp/index.html"));
     }
   }
   compiled = _template(html);
