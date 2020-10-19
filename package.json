@@ -4,24 +4,35 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "clear": "rm -rf .cache dist",
+    "clear": "rm -rf .tmp .cache dist",
     "build:client": "cross-env BABEL_ENV=client parcel build src/client/index.js -d dist/client --public-url /dist --no-minify --no-cache",
     "build:server": "cross-env BABEL_ENV=server parcel build src/server/index.js -d dist/server --public-url /dist --target=node --no-minify  --no-cache",
     "build": "yarn clear && concurrently 'yarn build:client' 'yarn build:server'",
     "start": "yarn run build && node dist/server",
-    "dev": "yarn run build && parcel src/client/index.html"
+    "dev:client": "BABEL_ENV=client parcel src/client/index.html --out-dir .tmp --out-file index.html --public-url /static/ --no-cache",
+    "dev:server": "nodemon --exec 'BABEL_ENV=server babel-node src/server'",
+    "dev": "concurrently 'yarn dev:client' 'yarn dev:server'"
   },
   "dependencies": {
     "express": "^4.17.1",
+    "lodash": "^4.17.20",
+    "morgan": "^1.10.0",
     "react": "^16.14.0",
-    "react-dom": "^16.14.0"
+    "react-dom": "^16.14.0",
+    "react-router": "^5.2.0",
+    "react-router-dom": "^5.2.0"
   },
   "devDependencies": {
+    "@babel/cli": "^7.12.1",
     "@babel/core": "^7.12.3",
+    "@babel/node": "^7.12.1",
     "@babel/preset-env": "^7.12.1",
     "@babel/preset-react": "^7.12.1",
+    "babel-polyfill": "^6.26.0",
     "concurrently": "^5.3.0",
     "cross-env": "^7.0.2",
+    "nodemon": "^2.0.5",
+    "parcel": "^1.12.4",
     "parcel-bundler": "^1.12.4",
     "typescript": "^4.0.3"
   }

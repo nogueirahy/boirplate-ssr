@@ -1,33 +1,29 @@
-import React from "react";
-import ReactDOM from "react-dom/server";
+import path from "path";
+
 import express from "express";
-import AppComponent from "../client/App";
+import morgan from "morgan";
+import ssrMiddleware from "./ssrMiddleware";
 
 const app = express();
+const port = process.env.PORT || 8080;
 
-app.use(express.static('dist/client'));
+app.use(morgan("tiny"));
 
-app.get("/", function (req, res) {
-  const html = `
-        <!DOCTYPE html>
-        <html lang="en">
-        <head>
-          <meta charset="UTF-8">
-          <meta name="viewport" content="width=device-width, initial-scale=1.0">
-          <title>SSAX</title>
-        </head>
-        <body>
-          <div id="app">
-            ${ReactDOM.renderToString(<AppComponent />)}
-          </div>
-          <script src="./index.js"></script>
-        </body>
-        </html>
-      `;
-  res.send(html);
+if (process.env.NODE_ENV === "production") {
+  app.use("/static", express.static("./static"));
+} else {
+  app.use("/static", express.static(".tmp"));
+}
+
+app.use(ssrMiddleware);
+
+app.get("/api/:id", async (req, res) => {
+  res.send({ v1: req.params });
 });
 
-const port = process.env.PORT || 1234;
+app.use((req, res, next) => {
+  res.status(404).send("404");
+});
 
 app.listen(port, () => {
   console.log(`Listening on port ${port}...`);

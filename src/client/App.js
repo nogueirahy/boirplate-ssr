@@ -1,9 +1,20 @@
-import React from 'react';
+import React from "react";
+import { Switch, Route } from "react-router-dom";
+import routes from "./routes";
 
-export default function AppComponent(props) {
+const App = () => {
   return (
-    <div>
-      <h3>Hello worldX</h3>
-    </div>
-  )
-}
+    <Switch>
+      {routes.map((route) => (
+        <Route
+          key={route.path}
+          path={route.path}
+          exact={route.exact}
+          component={route.component}
+        />
+      ))}
+    </Switch>
+  );
+};
+
+export default App;
