@@ -23,7 +23,7 @@ export default async (req: Request, res: Response, next: NextFunction) => {
   );
 
   try {
-    const html = generateHtml({ markup, preloadedState });
+    const html = await generateHtml({ markup, preloadedState });
     res.send(html);
   } catch (err) {
     console.error("Something went wrong:", err);

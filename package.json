@@ -6,7 +6,7 @@
   "scripts": {
     "clear": "rm -rf .tmp .cache build",
     "build:client": "BABEL_ENV=client parcel build src/client/index.html -d build/static --public-url /static --no-cache  --no-source-maps",
-    "build:server": "BABEL_ENV=server parcel build src/server/index.js -d build -t node --no-minify --no-cache --no-source-maps",
+    "build:server": "BABEL_ENV=server parcel build src/server/index.ts -d build -t node --no-minify --no-cache --no-source-maps",
     "build": "yarn clear && concurrently 'yarn build:client' 'yarn build:server'",
     "serve": "NODE_ENV=production node build/index.js",
     "dev:client": "BABEL_ENV=client parcel src/client/index.html --out-dir .tmp --out-file index.html --public-url /static/ --no-cache",
