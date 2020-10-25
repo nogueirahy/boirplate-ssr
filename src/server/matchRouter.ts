@@ -1,7 +1,7 @@
 import { matchPath } from "react-router";
 import routes from "../client/routes";
 
-export default (path) => {
+export default (path: string) => {
   let component = null;
   let params = null;
   routes.some((route) => {

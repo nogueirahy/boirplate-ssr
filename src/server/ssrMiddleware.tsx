@@ -1,11 +1,12 @@
-import React from "react";
+import * as React from "react";
 import ReactDOMServer from "react-dom/server";
 import { StaticRouter as Router } from "react-router-dom";
 import App from "../client/App";
 import matchRoute from "./matchRouter";
 import generateHtml from "./generateHtml";
+import { Request, Response, NextFunction } from "express";
 
-export default async (req, res, next) => {
+export default async (req: Request, res: Response, next: NextFunction) => {
   const { component } = matchRoute(req.path);
 
   if (!component) {
@@ -13,7 +14,6 @@ export default async (req, res, next) => {
   }
 
   const context = {};
-
   const preloadedState = {};
 
   const markup = ReactDOMServer.renderToString(
@@ -22,6 +22,11 @@ export default async (req, res, next) => {
     </Router>
   );
 
-  const html = generateHtml({ markup, preloadedState });
-  res.send(html);
+  try {
+    const html = generateHtml({ markup, preloadedState });
+    res.send(html);
+  } catch (err) {
+    console.error("Something went wrong:", err);
+    return res.status(500).send("Oops, better luck next time!");
+  }
 };

@@ -1,11 +1,9 @@
-import path from "path";
-
 import express from "express";
 import morgan from "morgan";
 import ssrMiddleware from "./ssrMiddleware";
 
+const PORT = process.env.PORT || 8080;
 const app = express();
-const port = process.env.PORT || 8080;
 
 app.use(morgan("tiny"));
 
@@ -25,6 +23,6 @@ app.use((req, res, next) => {
   res.status(404).send("404");
 });
 
-app.listen(port, () => {
-  console.log(`Listening on port ${port}...`);
+app.listen(PORT, () => {
+  console.log(`Listening on port ${PORT}...`);
 });
