@@ -1,5 +1,5 @@
 import { matchPath } from "react-router";
-import routes from "../client/routes";
+import routes from "../../client/routes";
 
 export default (path: string) => {
   let component = null;
