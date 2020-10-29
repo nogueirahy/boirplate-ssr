@@ -1,11 +1,14 @@
 import express from "express";
+import helmet from "helmet";
 import morgan from "morgan";
-import ssrMiddleware from "./ssrMiddleware";
+import {
+  ssrMiddleware,
+  errorMiddleware,
+  healthMiddleware,
+} from "./middlewares";
 
 const PORT = process.env.PORT || 8080;
 const app = express();
-
-app.use(morgan("tiny"));
 
 if (process.env.NODE_ENV === "production") {
   app.use("/static", express.static("./build/static"));
@@ -13,15 +16,11 @@ if (process.env.NODE_ENV === "production") {
   app.use("/static", express.static(".tmp"));
 }
 
+app.use(morgan("tiny"));
+app.use(helmet());
 app.use(ssrMiddleware);
-
-app.get("/api/:id", async (req, res) => {
-  res.send({ v1: req.params });
-});
-
-app.use((req, res, next) => {
-  res.status(404).send("404");
-});
+app.get("/health", healthMiddleware);
+app.use(errorMiddleware);
 
 app.listen(PORT, () => {
   console.log(`Listening on port ${PORT}...`);

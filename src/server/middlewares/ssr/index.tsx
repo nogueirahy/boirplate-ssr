@@ -1,12 +1,12 @@
 import * as React from "react";
+import { Request, Response, NextFunction, Handler } from "express";
 import ReactDOMServer from "react-dom/server";
 import { StaticRouter as Router } from "react-router-dom";
-import App from "../client/App";
-import matchRoute from "./matchRouter";
+import App from "../../../client/App";
+import matchRoute from "../../utils/matchRouter";
 import generateHtml from "./generateHtml";
-import { Request, Response, NextFunction } from "express";
 
-export default async (req: Request, res: Response, next: NextFunction) => {
+const ssrMiddlware: Handler = async (req, res, next) => {
   const { component } = matchRoute(req.path);
 
   if (!component) {
@@ -27,6 +27,8 @@ export default async (req: Request, res: Response, next: NextFunction) => {
     res.send(html);
   } catch (err) {
     console.error("Something went wrong:", err);
-    return res.status(500).send("Oops, better luck next time!");
+    return res.status(500).end("Error 500 !");
   }
 };
+
+export default ssrMiddlware;
